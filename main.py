@@ -76,4 +76,5 @@ if generate_pdf:
   print('libreoffice not found. PDF not generated.')
  else:
   subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', newdocx], check=True)
+  shutil.move(newdocx[:-5]+'.pdf', doc_filename[:-5]+'.pdf')
 print('DONE')
