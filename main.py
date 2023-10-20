@@ -82,6 +82,8 @@ if rep_json:
  rep_lst = json.loads(Path(rep_json).read_text())
  for reobj in rep_lst:
   if 'old' in reobj and 'new' in reobj:
+   print('OLD:', reobj['old'])
+   print('NEW:', reobj['new'])
    if 'count' in reobj:
     docxmlstr = docxmlstr.replace(reobj['old'], reobj['new'], reobj['count'])
    else:
