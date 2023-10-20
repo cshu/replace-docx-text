@@ -14,7 +14,6 @@ from os import listdir
 from os.path import isfile
 from datetime import datetime
 
-print('This program uses clipboard text to replace old text specified by environment variable REPLACE_DOCX_TEXT_OLD')
 if shutil.which('zip') is None:
  raise Exception('zip command not found')
 if shutil.which('unzip') is None:
