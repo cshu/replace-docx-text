@@ -24,11 +24,13 @@ parser.add_argument('--old', help='Old text', required=True)
 parser.add_argument('--replace-whitespace-with-space', help='Replace whitespace with space', action='store_true')
 parser.add_argument('--generate-pdf', help='Additional PDF generation', action='store_true')
 parser.add_argument('--generate-pdf-with-pandoc', help='Additional PDF generation with pandoc', action='store_true')
+parser.add_argument('--get-pdf-num-of-pages', help='Print PDF number of pages', action='store_true')
 nmsce: argparse.Namespace = parser.parse_args()
 pattern: str = nmsce.old
 replace_whitespace_with_space: bool = nmsce.replace_whitespace_with_space
 generate_pdf: bool = nmsce.generate_pdf
 generate_pdf_with_pandoc: bool = nmsce.generate_pdf_with_pandoc
+get_pdf_num_of_pages: bool = nmsce.get_pdf_num_of_pages
 doc_filename: str = nmsce.docxfile
 #print(nmsce)
 tmpdir: str = tempfile.gettempdir()
@@ -76,5 +78,7 @@ if generate_pdf:
   print('libreoffice not found. PDF not generated.')
  else:
   subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', newdocx], check=True)
-  shutil.move(newdocx[:-5]+'.pdf', doc_filename[:-5]+'.pdf')
-print('DONE')
+  dst: str = shutil.move(newdocx[:-5]+'.pdf', doc_filename[:-5]+'.pdf')
+  if get_pdf_num_of_pages and shutil.which('pdfinfo'):
+   subprocess.run('pdfinfo '+dst+' | grep -- ^Pages', shell=True, check=True)#fixme if dst contains special character this will fail
+#print('DONE')
