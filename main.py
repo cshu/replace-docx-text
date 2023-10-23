@@ -84,12 +84,14 @@ if rep_json:
  rep_lst = json.loads(Path(rep_json).read_text())
  for reobj in rep_lst:
   if 'old' in reobj and 'new' in reobj:
+   nstr: str = reobj['new']
    print('OLD:', reobj['old'])
    print('NEW:', reobj['new'])
+   nstr = xml.sax.saxutils.escape(nstr)
    if 'count' in reobj:
-    docxmlstr = docxmlstr.replace(reobj['old'], reobj['new'], reobj['count'])
+    docxmlstr = docxmlstr.replace(reobj['old'], nstr, reobj['count'])
    else:
-    docxmlstr = docxmlstr.replace(reobj['old'], reobj['new'])
+    docxmlstr = docxmlstr.replace(reobj['old'], nstr)
 if rep:
  rep_lst = json.loads(Path(rep).read_text())
  for reobj in rep_lst:
@@ -97,6 +99,7 @@ if rep:
    print('OLD:', reobj['old'])
    print('NEW:', reobj['new'])
    nstr: str = Path(reobj['new']).read_text()
+   nstr = xml.sax.saxutils.escape(nstr)
    if 'count' in reobj:
     docxmlstr = docxmlstr.replace(reobj['old'], nstr, reobj['count'])
    else:
