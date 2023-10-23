@@ -115,11 +115,11 @@ if not keep_temp_files:
 #if 'true' == os.getenv('REPLACE_DOCX_TEXT_CONVERT_TO_PDF'):
 if generate_pdf:
  if generate_pdf_with_pandoc and shutil.which('pandoc') and shutil.which('pdflatex'):
-  subprocess.run(['pandoc', '-o', newdocx[:-5]+'.pdf', '-f', 'docx', newdocx], check=True)
+  subprocess.run(['pandoc', '-o', newdocx[:-5]+'.pdf', '-f', 'docx', newdocx], check=True, cwd=os.path.dirname(newdocx))
  elif shutil.which('libreoffice') is None:
   print('libreoffice not found. PDF not generated.')
  else:
-  subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', newdocx], check=True)
+  subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', newdocx], check=True, cwd=os.path.dirname(newdocx))
   dst: str = shutil.move(newdocx[:-5]+'.pdf', doc_filename[:-5]+'.pdf')
   if get_pdf_num_of_pages and shutil.which('pdfinfo'):
    subprocess.run('pdfinfo '+dst+' | grep -- ^Pages', shell=True, check=True)#fixme if dst contains special character this will fail
